@@ -11,13 +11,16 @@ I've long forgotten the details, but after a quick look at the
 code, it's easy to reconstruct what I did.
 
 It's a simple CPU, so it wasn't hard to write an execution loop
-for the main process, and put background tasks (motor movement,
-sensor reading) into a simple timer interrupt routine. The main
+for the main thread, and put background tasks (motor movement,
+sensor reading) into a simple timer interrupt routine (it looks
+like I included slots for up to 10 interrupt routines, so you
+could say I supported up to 11 concurrent threads). The main
 loop and logic were written in c (using a cross-compiler). The
 drivers and interrupt routines were written in macro assembly.
 To save memory, I wrote my own LCD output routine, so that the
-robot can print messages, but without the overhead of a formal
-"printf" library. For debugging, I used the db11 remote debugger.
+robot can print messages, but without the memory overhead of a 
+formal "printf" library. For debugging, I used the db11 remote 
+debugger.
 
 Code was created on a MacOS 9 system. A USB-to-serial cable was
 used to talk to the robot. It looks like I tinkered a bit to get
@@ -26,3 +29,6 @@ the boot loader to work.
 The motor and LCD drivers used bits and pieces of code borrowed
 from other sources. It looks like I wrote the code for the sonar
 range finder myself from scratch.
+
+Oh, the robot was called "fred". The main working code can be
+found in the corresponding subdirectory.
