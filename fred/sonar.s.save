@@ -1,0 +1,86 @@
+;
+; Sonar test
+;
+;
+	.include "mc68hc11.control.s"
+;
+	.section .text
+	.global SonarInit
+SonarInit:
+	LDX	#REGS
+;
+; Set the DDRA7 bit of the PACTL register. This switches port
+; A bit 7 to output (also labeled as "PA1"). On the handyboard,
+; PA1 is connected to digital "input" number 3 on header J2.
+; This will be the trigger for our sonar pulse.
+;
+	BSET	PACTL,X	#0b10000000
+;
+; Set EDG3B and EDG3A bits on the TCTL2 control register
+; to capture input on the falling edge only of digital input
+; TIC3. On the handyboard, TIC3 is connected to digital input
+; number 0 on header J2. This will be used to record the time
+; the sonic echo returns.
+;
+	BSET	TCTL2,X	#0b00000010
+	BCLR	TCTL2,X	#0b00000001
+;
+; Clear interrupt enable bit, since we will be using polling
+;
+	BCLR	TMSK1,X #0b00000001
+;
+	RTS
+;
+; ==============
+; SonarRead
+; ==============
+; Read and wait for reply (SLOW)
+; Returns answer in register D
+;
+	.global SonarRead
+SonarRead:
+	LDX	#REGS
+;
+; Send command for a sonic pulse by setting and
+; then clearing bit 7 of PORTA. The pulse must be at
+; least 10 microseconds long, or 20 clock cycles.
+; Spend this time recording start time
+;
+	BSET	PORTA,X	#0b10000000		; Start pulse
+;
+	BSET	TFLG1,X	#0b00000001		; 7 clocks: Clear TIC3 flag (bit IC3F of TFLG1)
+;
+	PSHY
+	TSY					; Use space on stack
+;
+	LDD	TCNT,X				; 5 clocks: Load current time
+	STD	0,Y				; 5 clocks: Store away
+;	
+	BCLR	PORTA,X	#0b10000000		; Lower pulse
+;
+; Wait for response, or until timeout. We can read
+; a response by checking bit 0 of PORTA, which
+; corresponds to bit 0 of PORTA, which is IC3, connected
+; to TIC3 (digital input number 0 header J2 on the handyboard).
+;
+WaitLoop:
+	BRSET	PORTA,X #0b00000001 Done	; Has bit cleared (sonar answer recorded)?
+	
+	LDD	TCNT,X
+	SUBD	0,Y
+	BGT	WaitLoop
+	
+	LDD	#0
+	BRA	Return
+;
+; Read value and subtract
+;
+Done:
+;	LDD	TCNT,X
+
+	LDD	TIC3,X
+	SUBD	0,Y
+
+Return:
+	PULY
+	RTS

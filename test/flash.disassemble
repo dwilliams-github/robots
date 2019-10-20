@@ -1,0 +1,317 @@
+
+flash.elf:     file format elf32-m68hc11
+
+Disassembly of section .text:
+
+00008000 <_start>:
+    8000:	8e f7 ff    	lds	#f7ff <_stack>
+    8003:	bd 82 61    	jsr	8261 <__premain>
+
+00008006 <__map_data_section>:
+    8006:	cc 00 00    	ldd	#0 <__bss_size>
+    8009:	27 16       	beq	8021 <__init_bss_section>
+    800b:	ce 82 77    	ldx	#8277 <__data_image>
+    800e:	18 ce c0 00 	ldy	#c000 <__data_section_start>
+
+00008012 <Loop>:
+    8012:	36          	psha
+    8013:	a6 00       	ldaa	0,x
+    8015:	18 a7 00    	staa	0,y
+    8018:	32          	pula
+    8019:	08          	inx
+    801a:	18 08       	iny
+    801c:	83 00 01    	subd	#1 <__bss_size+0x1>
+    801f:	26 f1       	bne	8012 <Loop>
+
+00008021 <__init_bss_section>:
+    8021:	cc 00 00    	ldd	#0 <__bss_size>
+    8024:	27 0b       	beq	8031 <Done>
+    8026:	ce c0 00    	ldx	#c000 <__data_section_start>
+
+00008029 <Loop>:
+    8029:	6f 00       	clr	0,x
+    802b:	08          	inx
+    802c:	83 00 01    	subd	#1 <__bss_size+0x1>
+    802f:	26 f8       	bne	8029 <Loop>
+
+00008031 <Done>:
+    8031:	bd 80 3d    	jsr	803d <main>
+
+00008034 <fatal>:
+    8034:	bd 00 0a    	jsr	a <_exit>
+    8037:	20 fb       	bra	8034 <fatal>
+    8039:	80 06       	suba	#6
+    803b:	80 21       	suba	#33
+
+0000803d <main>:
+    803d:	de 00       	ldx	*0 <__bss_size>
+    803f:	3c          	pshx
+    8040:	30          	tsx
+    8041:	8f          	xgdx
+    8042:	c3 ff e6    	addd	#ffe6 <_stack+0x7e7>
+    8045:	8f          	xgdx
+    8046:	35          	txs
+    8047:	9f 00       	sts	*0 <__bss_size>
+    8049:	de 02       	ldx	*2 <_.d1>
+    804b:	3c          	pshx
+    804c:	de 04       	ldx	*4 <_.d2>
+    804e:	3c          	pshx
+    804f:	de 06       	ldx	*6 <_.d3>
+    8051:	3c          	pshx
+    8052:	de 08       	ldx	*8 <_.d4>
+    8054:	3c          	pshx
+    8055:	cc 10 00    	ldd	#1000 <_exit+0xff6>
+    8058:	de 00       	ldx	*0 <__bss_size>
+    805a:	ed 0d       	std	13,x
+    805c:	18 de 00    	ldy	*0 <__bss_size>
+    805f:	4f          	clra
+    8060:	5f          	clrb
+    8061:	18 ed 03    	std	3,y
+    8064:	4f          	clra
+    8065:	5f          	clrb
+    8066:	18 ed 01    	std	1,y
+    8069:	de 00       	ldx	*0 <__bss_size>
+    806b:	ee 01       	ldx	1,x
+    806d:	8c 00 01    	cpx	#1 <__bss_size+0x1>
+    8070:	2d 18       	blt	808a <main+0x4d>
+    8072:	de 00       	ldx	*0 <__bss_size>
+    8074:	ee 01       	ldx	1,x
+    8076:	8c 00 01    	cpx	#1 <__bss_size+0x1>
+    8079:	2f 03       	ble	807e <main+0x41>
+    807b:	7e 82 5e    	jmp	825e <main+0x221>
+    807e:	de 00       	ldx	*0 <__bss_size>
+    8080:	ee 03       	ldx	3,x
+    8082:	8c 86 9f    	cpx	#869f <__data_image+0x428>
+    8085:	23 03       	bls	808a <main+0x4d>
+    8087:	7e 82 5e    	jmp	825e <main+0x221>
+    808a:	18 de 00    	ldy	*0 <__bss_size>
+    808d:	cd ee 0d    	ldx	13,y
+    8090:	c6 40       	ldab	#64
+    8092:	e7 00       	stab	0,x
+    8094:	4f          	clra
+    8095:	5f          	clrb
+    8096:	18 ed 07    	std	7,y
+    8099:	4f          	clra
+    809a:	5f          	clrb
+    809b:	18 ed 05    	std	5,y
+    809e:	18 de 00    	ldy	*0 <__bss_size>
+    80a1:	18 ec 03    	ldd	3,y
+    80a4:	dd 08       	std	*8 <_.d4>
+    80a6:	18 ec 01    	ldd	1,y
+    80a9:	dd 06       	std	*6 <_.d3>
+    80ab:	dc 08       	ldd	*8 <_.d4>
+    80ad:	de 06       	ldx	*6 <_.d3>
+    80af:	18 ed 19    	std	25,y
+    80b2:	cd ef 17    	stx	23,y
+    80b5:	18 ec 19    	ldd	25,y
+    80b8:	05          	asld
+    80b9:	18 ed 19    	std	25,y
+    80bc:	18 ec 17    	ldd	23,y
+    80bf:	59          	rolb
+    80c0:	49          	rola
+    80c1:	18 ed 17    	std	23,y
+    80c4:	18 ec 19    	ldd	25,y
+    80c7:	cd ee 17    	ldx	23,y
+    80ca:	d3 08       	addd	*8 <_.d4>
+    80cc:	8f          	xgdx
+    80cd:	d9 07       	adcb	*7 <_.d3+0x1>
+    80cf:	b9 00 06    	adca	6 <_.d3>
+    80d2:	8f          	xgdx
+    80d3:	18 ed 19    	std	25,y
+    80d6:	cd ef 17    	stx	23,y
+    80d9:	18 ec 19    	ldd	25,y
+    80dc:	dd 04       	std	*4 <_.d2>
+    80de:	18 ec 17    	ldd	23,y
+    80e1:	dd 02       	std	*2 <_.d1>
+    80e3:	dc 04       	ldd	*4 <_.d2>
+    80e5:	de 02       	ldx	*2 <_.d1>
+    80e7:	18 ce 00 05 	ldy	#5 <_.d2+0x1>
+    80eb:	bd 82 64    	jsr	8264 <___ashlsi3>
+    80ee:	dd 04       	std	*4 <_.d2>
+    80f0:	df 02       	stx	*2 <_.d1>
+    80f2:	18 de 00    	ldy	*0 <__bss_size>
+    80f5:	18 ec 19    	ldd	25,y
+    80f8:	cd ee 17    	ldx	23,y
+    80fb:	d3 04       	addd	*4 <_.d2>
+    80fd:	8f          	xgdx
+    80fe:	d9 03       	adcb	*3 <_.d1+0x1>
+    8100:	b9 00 02    	adca	2 <_.d1>
+    8103:	8f          	xgdx
+    8104:	18 ed 19    	std	25,y
+    8107:	cd ef 17    	stx	23,y
+    810a:	18 ec 19    	ldd	25,y
+    810d:	cd ee 17    	ldx	23,y
+    8110:	d3 08       	addd	*8 <_.d4>
+    8112:	8f          	xgdx
+    8113:	d9 07       	adcb	*7 <_.d3+0x1>
+    8115:	b9 00 06    	adca	6 <_.d3>
+    8118:	8f          	xgdx
+    8119:	18 ed 11    	std	17,y
+    811c:	cd ef 0f    	stx	15,y
+    811f:	18 ec 05    	ldd	5,y
+    8122:	cd a3 0f    	cpd	15,y
+    8125:	2d 12       	blt	8139 <main+0xfc>
+    8127:	18 ec 05    	ldd	5,y
+    812a:	cd a3 0f    	cpd	15,y
+    812d:	2e 32       	bgt	8161 <main+0x124>
+    812f:	18 ec 07    	ldd	7,y
+    8132:	cd a3 11    	cpd	17,y
+    8135:	25 02       	bcs	8139 <main+0xfc>
+    8137:	20 28       	bra	8161 <main+0x124>
+    8139:	18 de 00    	ldy	*0 <__bss_size>
+    813c:	18 ec 07    	ldd	7,y
+    813f:	dd 04       	std	*4 <_.d2>
+    8141:	18 ec 05    	ldd	5,y
+    8144:	dd 02       	std	*2 <_.d1>
+    8146:	dc 04       	ldd	*4 <_.d2>
+    8148:	de 02       	ldx	*2 <_.d1>
+    814a:	c3 00 01    	addd	#1 <__bss_size+0x1>
+    814d:	24 01       	bcc	8150 <main+0x113>
+    814f:	08          	inx
+    8150:	dd 04       	std	*4 <_.d2>
+    8152:	df 02       	stx	*2 <_.d1>
+    8154:	dc 04       	ldd	*4 <_.d2>
+    8156:	18 ed 07    	std	7,y
+    8159:	dc 02       	ldd	*2 <_.d1>
+    815b:	18 ed 05    	std	5,y
+    815e:	7e 80 9e    	jmp	809e <main+0x61>
+    8161:	18 de 00    	ldy	*0 <__bss_size>
+    8164:	cd ee 0d    	ldx	13,y
+    8167:	6f 00       	clr	0,x
+    8169:	4f          	clra
+    816a:	5f          	clrb
+    816b:	18 ed 07    	std	7,y
+    816e:	4f          	clra
+    816f:	5f          	clrb
+    8170:	18 ed 05    	std	5,y
+    8173:	18 de 00    	ldy	*0 <__bss_size>
+    8176:	18 ec 03    	ldd	3,y
+    8179:	dd 08       	std	*8 <_.d4>
+    817b:	18 ec 01    	ldd	1,y
+    817e:	dd 06       	std	*6 <_.d3>
+    8180:	dc 08       	ldd	*8 <_.d4>
+    8182:	de 06       	ldx	*6 <_.d3>
+    8184:	18 ed 19    	std	25,y
+    8187:	cd ef 17    	stx	23,y
+    818a:	18 ec 19    	ldd	25,y
+    818d:	05          	asld
+    818e:	18 ed 19    	std	25,y
+    8191:	18 ec 17    	ldd	23,y
+    8194:	59          	rolb
+    8195:	49          	rola
+    8196:	18 ed 17    	std	23,y
+    8199:	18 ec 19    	ldd	25,y
+    819c:	cd ee 17    	ldx	23,y
+    819f:	d3 08       	addd	*8 <_.d4>
+    81a1:	8f          	xgdx
+    81a2:	d9 07       	adcb	*7 <_.d3+0x1>
+    81a4:	b9 00 06    	adca	6 <_.d3>
+    81a7:	8f          	xgdx
+    81a8:	18 ed 19    	std	25,y
+    81ab:	cd ef 17    	stx	23,y
+    81ae:	18 ec 19    	ldd	25,y
+    81b1:	dd 04       	std	*4 <_.d2>
+    81b3:	18 ec 17    	ldd	23,y
+    81b6:	dd 02       	std	*2 <_.d1>
+    81b8:	dc 04       	ldd	*4 <_.d2>
+    81ba:	de 02       	ldx	*2 <_.d1>
+    81bc:	18 ce 00 05 	ldy	#5 <_.d2+0x1>
+    81c0:	bd 82 64    	jsr	8264 <___ashlsi3>
+    81c3:	dd 04       	std	*4 <_.d2>
+    81c5:	df 02       	stx	*2 <_.d1>
+    81c7:	18 de 00    	ldy	*0 <__bss_size>
+    81ca:	18 ec 19    	ldd	25,y
+    81cd:	cd ee 17    	ldx	23,y
+    81d0:	d3 04       	addd	*4 <_.d2>
+    81d2:	8f          	xgdx
+    81d3:	d9 03       	adcb	*3 <_.d1+0x1>
+    81d5:	b9 00 02    	adca	2 <_.d1>
+    81d8:	8f          	xgdx
+    81d9:	18 ed 19    	std	25,y
+    81dc:	cd ef 17    	stx	23,y
+    81df:	18 ec 19    	ldd	25,y
+    81e2:	cd ee 17    	ldx	23,y
+    81e5:	d3 08       	addd	*8 <_.d4>
+    81e7:	8f          	xgdx
+    81e8:	d9 07       	adcb	*7 <_.d3+0x1>
+    81ea:	b9 00 06    	adca	6 <_.d3>
+    81ed:	8f          	xgdx
+    81ee:	18 ed 15    	std	21,y
+    81f1:	cd ef 13    	stx	19,y
+    81f4:	18 ec 05    	ldd	5,y
+    81f7:	cd a3 13    	cpd	19,y
+    81fa:	2d 12       	blt	820e <main+0x1d1>
+    81fc:	18 ec 05    	ldd	5,y
+    81ff:	cd a3 13    	cpd	19,y
+    8202:	2e 32       	bgt	8236 <main+0x1f9>
+    8204:	18 ec 07    	ldd	7,y
+    8207:	cd a3 15    	cpd	21,y
+    820a:	25 02       	bcs	820e <main+0x1d1>
+    820c:	20 28       	bra	8236 <main+0x1f9>
+    820e:	18 de 00    	ldy	*0 <__bss_size>
+    8211:	18 ec 07    	ldd	7,y
+    8214:	dd 04       	std	*4 <_.d2>
+    8216:	18 ec 05    	ldd	5,y
+    8219:	dd 02       	std	*2 <_.d1>
+    821b:	dc 04       	ldd	*4 <_.d2>
+    821d:	de 02       	ldx	*2 <_.d1>
+    821f:	c3 00 01    	addd	#1 <__bss_size+0x1>
+    8222:	24 01       	bcc	8225 <main+0x1e8>
+    8224:	08          	inx
+    8225:	dd 04       	std	*4 <_.d2>
+    8227:	df 02       	stx	*2 <_.d1>
+    8229:	dc 04       	ldd	*4 <_.d2>
+    822b:	18 ed 07    	std	7,y
+    822e:	dc 02       	ldd	*2 <_.d1>
+    8230:	18 ed 05    	std	5,y
+    8233:	7e 81 73    	jmp	8173 <main+0x136>
+    8236:	18 de 00    	ldy	*0 <__bss_size>
+    8239:	18 ec 03    	ldd	3,y
+    823c:	dd 04       	std	*4 <_.d2>
+    823e:	18 ec 01    	ldd	1,y
+    8241:	dd 02       	std	*2 <_.d1>
+    8243:	dc 04       	ldd	*4 <_.d2>
+    8245:	de 02       	ldx	*2 <_.d1>
+    8247:	c3 00 01    	addd	#1 <__bss_size+0x1>
+    824a:	24 01       	bcc	824d <main+0x210>
+    824c:	08          	inx
+    824d:	dd 04       	std	*4 <_.d2>
+    824f:	df 02       	stx	*2 <_.d1>
+    8251:	dc 04       	ldd	*4 <_.d2>
+    8253:	18 ed 03    	std	3,y
+    8256:	dc 02       	ldd	*2 <_.d1>
+    8258:	18 ed 01    	std	1,y
+    825b:	7e 80 69    	jmp	8069 <main+0x2c>
+    825e:	01          	nop
+    825f:	20 fe       	bra	825f <main+0x222>
+
+00008261 <__premain>:
+    8261:	4f          	clra
+    8262:	06          	tap
+    8263:	39          	rts
+
+00008264 <___ashlsi3>:
+    8264:	18 8f       	xgdy
+    8266:	4f          	clra
+    8267:	c4 1f       	andb	#31
+    8269:	18 8f       	xgdy
+    826b:	27 09       	beq	8276 <Return>
+
+0000826d <Loop>:
+    826d:	05          	asld
+    826e:	8f          	xgdx
+    826f:	59          	rolb
+    8270:	49          	rola
+    8271:	8f          	xgdx
+    8272:	18 09       	dey
+    8274:	26 f7       	bne	826d <Loop>
+
+00008276 <Return>:
+    8276:	39          	rts
+Disassembly of section .fini0:
+Disassembly of section .fini4:
+
+0000000a <fatal>:
+   a:	0e          	cli
+   b:	3e          	wai
+   c:	20 fc       	bra	a <fatal>

@@ -1,0 +1,3 @@
+bootbaud 1200
+baud 9600
+tty /dev/tty.USA28X1P1.1

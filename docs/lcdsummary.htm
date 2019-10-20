@@ -1,0 +1,149 @@
+<html>
+<head>
+<title> Instruction set, Timing Diagram, Characteristics</title>
+</head>
+<body background="bg2.jpg" text=blue>
+<center><IMG SRC="ag_ball2.gif" WIDTH=27 HEIGHT=27 BORDER=0>
+<FONT SIZE=7 COLOR="red" FACE="Zurich XCn BT">Instruction Set</FONT><IMG SRC="ag_ball2.gif" WIDTH=27 HEIGHT=27 BORDER=0>
+
+
+<table width=100% border=1 bgcolor="white">
+<tr >
+<td rowspan=2>Instruction</TD><TD colspan=10 align=center>CODE</td>
+<td ROWSPAN=2><center><font size=2>D E S C R I P T I O N</center></TD><TD ROWSPAN=2><font size=2>Typical Execution Time</TD>
+</TR>
+<tr>
+<td><font size=2>RS</TD><TD><font size=2>R/W</TD><TD><font size=2>DB7</TD><TD><font size=2>DB6</TD><TD><font size=2>DB5</TD><TD><font size=2>DB4</TD><TD><font size=2>DB3</TD>
+<TD><font size=2>DB2</TD><TD><font size=2>DB1</TD><TD><font size=2>DB0</TD></TR>
+
+
+<TR>
+<TD>Clear <br>Display</td><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD>
+<td>0</TD><td>0</TD><TD>1</TD><TD><font size=2> Clears  display and returs the  cursor to home position 
+(address 0)  Sets I/D= 1  of Entry  Mode</font></td> <td>1.64탎</td></TR>
+
+<tr>
+<td>Return home</td><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD>
+<td>0</TD><td>1</TD><td>*</TD><td><font size=2> Return the cursor to the  home position (Address 0). Also  returns the 
+display  being  shifted to the original  position.  DD RAM contents  remain  unchanged. Set DD RAM address  to zero</font></tD>
+<td>1.64탎</td></TR>
+<tr>
+<td> Entry mode set</td><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>1</TD><td>I/D</TD><td>S</TD>
+<TD><font size=2>Set the Cursor  move direction  and specifies or not to shift the  display.  These operations  are performed
+ during  data write  and read  of DD RAM/CG RAM FOR NORMAL  OPERATION SET S TO 0</font></TD>
+<td>40탎</td></TR>
+<tr>
+<td>Display on off control</td><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>1</TD>
+<td>D</TD><td>C</TD><td>B</TD><td><font size=2>Sets ON/OFF  all display (D), cursor on/off (C), and blink of cursor position  character(B)</td>
+<td>40탎</td></TR>
+<tr>
+<td>Cursor or Display shift</td><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>1</TD><td>S/C</TD>
+<td>R/L</TD><td>*</TD><td>*</TD><td><font size=2> moves the   cursor and shifts  the display without changing DD RAM
+contents</font></td><td>40탎</td></TR>
+<tr>
+<td>Function Set</td><td>0</TD><td>0</TD><td>0</TD><td>0</TD><td>1</TD><td>DL</TD><td>N</TD><td>F</TD>
+<td>*</TD><td>*</TD><td><font size=2>Sets interface data  length(DL) number  of display  lines(N) and character font(F)
+</td><td>40탎</td></TR>
+<tr>
+<td> Set the CG RAM address</td><td>0</TD><td>0</TD><td>0</TD><td>1</TD><td colspan=5>MSB ACG </TD><td>LSB</TD>
+<td><font size=2>Set the CG RAM address. CG RAM data is  sent and 
+received  after  this setting.</font></TD>
+</td><td>40탎</td></TR>
+<tr>
+<td> Set the DD RAM address</td><td>0</TD><td>0</TD><td>1</TD><td colspan=6>MSB ADD </TD><td>LSB</TD>
+<td><font size=2>Set the DD RAM address. DD RAM data is  sent and 
+received  after  this setting.</font></TD>
+</td><td>40탎</td></TR>
+<tr>
+
+<td> Read bussy flag & address</td><td>0</TD><td>1</TD><td>BF</TD><td colspan=6>MSB AC </TD><td>LSB</TD>
+<td><font size=2>Reads  Busy(BF) indicating  internal operation is being  performed  and reads  address counter contents. 
+</font></TD>
+</td><td>40탎</td></TR>
+
+
+<td> Write data to CG or DD RAM</td><td>1</TD><td>0</TD><td colspan=7>MSB </TD><td>LSB</TD>
+<td><font size=2>Writes data into DD RAM of CG RAM</font></TD>
+</td><td>40탎</td></TR>
+
+<td> Read Data from CG or DD RAM</td><td>1</TD><td>1</TD><td colspan=7>MSB ACG </TD><td>LSB</TD>
+<td><font size=2>Reads data into DD RAM of CG RAM</font></TD>
+</td><td>40탎</td></TR>
+</table>
+<p>
+<table width=500 border=2 bgcolor="white">
+<tr>
+<td>S=1</td><td> Accompanies  display shift when data  is written, For normal  operations, set to 0</td>
+<td>DD RAM</td><td> Display  Data RAM</td></tr>
+<tr><td>I/D=1</td><td>Increment DL=1 : 8 bits</td><td>CG RAM </td><td>Character Generator RAM</td></tr>
+
+<tr><td>I/D=0</td><td>Decrement DL=0 : 4 bits</td><td>ACG </td><td>CG RAM address</td></tr>
+<tr><td>S/C=1</td><td>Display Shift N =1 : 2(1) line</td><td>ADD </td><td>DD RAM address components to cursor address</td></tr>
+<tr><td>S/C=0</td><td>Cursor Move N =0 : 1 line </td><td>AC </td><td>Address count used for  both DD and CG RAM address</td></tr>
+<tr><td>R/L=1</td><td>Shift to the right F=1 :5 x 10 dots  </td><td>B </td><td>1=ON  0=OFF(Blinking Cursor)</td></tr>
+<tr><td>R/L=1</td><td>Shift to the left f=0 : 5 x 7 dots </td><td>C  </td><td>1=ON  0=OFF(Cursor)</td></tr>
+<tr><td>BF=1</td><td>Internally operating</td><td>D</td><td>1=ON  0=OFF(Display)</td></tr>
+<tr><td>BF=0</td><td>Can accept this instruction</td><td>&nbsp </td><td>* Don't care</td></tr>
+
+
+</table>
+<IMG SRC="line3.gif" WIDTH=623 HEIGHT=6 BORDER=0>
+<p><IMG SRC="icon.gif" WIDTH=20 HEIGHT=16 BORDER=0><IMG SRC="icon.gif" WIDTH=20 HEIGHT=16 BORDER=0>
+<IMG SRC="icon.gif" WIDTH=20 HEIGHT=16 BORDER=0>
+
+<FONT SIZE=5 COLOR="#FF0000" FACE="KudosCondSSK">Timing Diagram</FONT>
+<IMG SRC="icon.gif" WIDTH=20 HEIGHT=16 BORDER=0>
+<IMG SRC="icon.gif" WIDTH=20 HEIGHT=16 BORDER=0>
+<IMG SRC="icon.gif" WIDTH=20 HEIGHT=16 BORDER=0><Br>
+
+<IMG SRC="time.jpg" WIDTH=308 HEIGHT=144 BORDER=2>
+
+<br>
+<IMG SRC="multi_1.jpg" WIDTH=800 HEIGHT=10 BORDER=0>
+<br>
+<FONT SIZE=5 COLOR="#804000" FACE="News Gothic Condensed">Timing characteristics for all compatible controller chips</FONT>
+
+<p><table width=600 border=3 bgcolor="white">
+<tr>
+<td><font size=2>Controllers Chips<br>Parameters</td><td>&nbsp</td><td><font size=2>Samsung<br>KS0066</td><td><font size=2>Hitachi<BR>HD44780</TD>
+<TD><font size=2>Sanyo<BR>LC7985NA</TD><TD><font size=2>Epson<BR>SED1278</TD><TD><font size=2>OKI<BR>MSM6222</TD>
+<TD><font size=2>Recommended<BR> Timing</TD> <TD><font size=2>Unit</TD> </TR>
+
+<tr><td>Enable Cycle time</td><td>tC(min)</td><td>1000</td><td>1000</td><td>1000</td><td>500</td><td>667</td><td>1000</td><td>nS</td></tr>
+<tr><td>Enable Pulse Width<br>
+High Level<br>Low Level</td><td><br>tW(min)<br>tL(min)</td><td><br>450<br>450</td><td><br>450<br>450</td>
+<td><br>450<br>450</td><td><br>220<br>220</td><td><br>280<br>280</td><td><br>450<br>450</td><td>nS</td></tr>
+<tr><td>E Raise Time</td><td>tr(max)</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>nS</td></tr>
+<tr><td>E Fall Time</td><td>tf (max)</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>nS</td></tr>
+<tr><td>Set-Up Time</td><td>tB(min)</td><td>140</td><td>140</td><td>140</td><td>40</td><td>140</td><td>140</td><td>nS</td></tr>
+<tr><td>Data Setup Time</td><td>tl(min)</td><td>195</td><td>195</td><td>195</td><td>60</td><td>180</td><td>195</td><td>nS</td></tr>
+<tr><td>Data Delay Time</td><td>tD(max)</td><td>320</td><td>320</td><td>320</td><td>120</td><td>220</td><td>320</td><td>nS</td></tr>
+<tr><td>Address Hold Time</td><td>tA(max)</td><td>10</td><td>10</td><td>10</td><td>10</td><td>10</td><td>10</td><td>nS</td></tr>
+<tr><td>Hold Time<br>Input Data<br> Output Data</td><td><br>tH(min)<br>tO(min)</td><td><br>10<br>20</td>
+<td><br>10<br>20</td><td><br>10<br>20</td><td><br>10<br>20</td><td><br>10<br>20</td><td><br>10<br>20</td><td>nS</td></tr>
+<tr><td colspan=9> Note:<br>
+1.  Initialization by power on reset involves  many unstable  factors caused by  power supply fluctuations. <br>&nbsp&nbsp&nbsp Therefore  initialising by instructions is strongly  recommended.<br>
+2. Module initializations doesnot  affect by  using  HD44100,or KS0065, or LC7930, or  MSM5260 driver <br>&nbsp&nbsp&nbsp chips.
+</table>
+<p>
+<b><center><table width=600 border=2><tr bgcolor=yellow ><td>
+<font color=red size=4><A HREF="prod.htm" ><center>  Products </center></a></td><td>
+<font color=red size=4><A HREF="tab.htm" > <center>  Tabulated Data </center></A></td><td>
+<font color=red size=4><A HREF="cont.htm" ><center>  Controller info</center> </a></td><td>
+
+
+
+<font color=red size=4><A HREF="back.htm" > <center> Backlighting </center> </A></tr><tr bgcolor=aqua></td><td>
+
+<font color=red size=4><A HREF="other.htm" ><center> Services</center></a></td><td>
+
+
+<font color=red size=4><a href="elect.htm" ><center>  Electrical Info </center></a></td><td>
+
+<font color=red size=4><A HREF="contact.htm" > <center> Contact Us</center> </a></td><td>
+<font color=red size=4><A HREF="mailto:lampex@hd1.vsnl.net.in" > <center> Lampex</center></a></td></tr>
+
+</table>
+
+<p align=right><A HREF="lamp.htm"><IMG SRC="home.gif" WIDTH=40 HEIGHT=40 BORDER=0></A>
+

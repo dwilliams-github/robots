@@ -1,0 +1,1 @@
+m6811-elf-gcc flash.c -m6811 -b m6811-local -o -Wl,-m 

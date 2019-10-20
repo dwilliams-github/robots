@@ -1,0 +1,803 @@
+
+fred.elf:     file format elf32-m68hc11
+
+Disassembly of section .text:
+
+00008000 <_start>:
+    8000:	8e ff fe    	lds	#fffe <_stack>
+    8003:	bd 84 f8    	jsr	84f8 <__premain>
+
+00008006 <__map_data_section>:
+    8006:	ce 85 27    	ldx	#8527 <__data_image>
+    8009:	18 ce c0 00 	ldy	#c000 <__data_section_start>
+    800d:	20 08       	bra	8017 <Start_map>
+
+0000800f <Loop>:
+    800f:	a6 00       	ldaa	0,x
+    8011:	18 a7 00    	staa	0,y
+    8014:	08          	inx
+    8015:	18 08       	iny
+
+00008017 <Start_map>:
+    8017:	8c 85 87    	cpx	#8587 <__data_image_end>
+    801a:	25 f3       	bcs	800f <Loop>
+
+0000801c <__init_bss_section>:
+    801c:	cc 00 02    	ldd	#2 <__bss_size>
+    801f:	27 0b       	beq	802c <Done>
+    8021:	ce c0 60    	ldx	#c060 <_edata>
+
+00008024 <Loop>:
+    8024:	6f 00       	clr	0,x
+    8026:	08          	inx
+    8027:	83 00 01    	subd	#1 <RESV1>
+    802a:	26 f8       	bne	8024 <Loop>
+
+0000802c <Done>:
+    802c:	8d 09       	bsr	8037 <main>
+
+0000802e <fatal>:
+    802e:	bd 85 12    	jsr	8512 <_exit>
+    8031:	20 fb       	bra	802e <fatal>
+    8033:	80 06       	suba	#6
+    8035:	80 1c       	suba	#28
+
+00008037 <main>:
+    8037:	de 06       	ldx	*6 <_.frame>
+    8039:	3c          	pshx
+    803a:	30          	tsx
+    803b:	8f          	xgdx
+    803c:	c3 ff f7    	addd	#fff7 <t1+0x3f96>
+    803f:	8f          	xgdx
+    8040:	35          	txs
+    8041:	9f 06       	sts	*6 <_.frame>
+    8043:	de 08       	ldx	*8 <PORTD>
+    8045:	3c          	pshx
+    8046:	de 0a       	ldx	*a <PORTE>
+    8048:	3c          	pshx
+    8049:	de 0c       	ldx	*c <OC1M>
+    804b:	3c          	pshx
+    804c:	de 0e       	ldx	*e <TCNT>
+    804e:	3c          	pshx
+    804f:	ce c0 28    	ldx	#c028 <LCDBuffer>
+    8052:	df 0e       	stx	*e <TCNT>
+    8054:	ce 10 39    	ldx	#1039 <REGS+0x39>
+    8057:	1c 00 80    	bset	0,x #$80
+    805a:	bd 81 ef    	jsr	81ef <LCDinit>
+    805d:	bd 82 9a    	jsr	829a <TimerInit>
+    8060:	bd 83 0c    	jsr	830c <LCDBufferInit>
+    8063:	bd 83 a0    	jsr	83a0 <PWMInit>
+    8066:	bd 84 85    	jsr	8485 <SonarInit>
+    8069:	18 ce 00 0d 	ldy	#d <OC1D>
+    806d:	18 3c       	pshy
+    806f:	ce 85 16    	ldx	#8516 <_etext>
+    8072:	3c          	pshx
+    8073:	dc 0e       	ldd	*e <TCNT>
+    8075:	bd 84 d3    	jsr	84d3 <__memcpy>
+    8078:	38          	pulx
+    8079:	38          	pulx
+
+0000807a <.L2>:
+    807a:	18 fe c0 5c 	ldy	c05c <SonarRange>
+    807e:	18 df 00    	sty	*0 <LCDCMD_CMD>
+    8081:	d6 01       	ldab	*1 <RESV1>
+    8083:	c4 0f       	andb	#15
+    8085:	d7 09       	stab	*9 <DDRD>
+    8087:	18 df 00    	sty	*0 <LCDCMD_CMD>
+    808a:	dc 00       	ldd	*0 <LCDCMD_CMD>
+    808c:	04          	lsrd
+    808d:	04          	lsrd
+    808e:	04          	lsrd
+    808f:	04          	lsrd
+    8090:	c4 0f       	andb	#15
+    8092:	d7 0b       	stab	*b <CFORC>
+    8094:	18 df 00    	sty	*0 <LCDCMD_CMD>
+    8097:	d6 00       	ldab	*0 <LCDCMD_CMD>
+    8099:	4f          	clra
+    809a:	c4 0f       	andb	#15
+    809c:	d7 0d       	stab	*d <OC1D>
+    809e:	18 df 00    	sty	*0 <LCDCMD_CMD>
+    80a1:	d6 00       	ldab	*0 <LCDCMD_CMD>
+    80a3:	4f          	clra
+    80a4:	54          	lsrb
+    80a5:	54          	lsrb
+    80a6:	54          	lsrb
+    80a7:	54          	lsrb
+    80a8:	df 04       	stx	*4 <LCDCMD_QUERYBUSY>
+    80aa:	de 06       	ldx	*6 <_.frame>
+    80ac:	ed 08       	std	8,x
+    80ae:	de 04       	ldx	*4 <LCDCMD_QUERYBUSY>
+    80b0:	d6 09       	ldab	*9 <DDRD>
+    80b2:	c1 09       	cmpb	#9
+    80b4:	22 04       	bhi	80ba <.L2+0x40>
+    80b6:	cb 30       	addb	#48
+    80b8:	20 04       	bra	80be <.L2+0x44>
+    80ba:	d6 09       	ldab	*9 <DDRD>
+    80bc:	cb 37       	addb	#55
+    80be:	18 de 0e    	ldy	*e <TCNT>
+    80c1:	18 e7 15    	stab	21,y
+    80c4:	d6 0b       	ldab	*b <CFORC>
+    80c6:	c1 09       	cmpb	#9
+    80c8:	22 04       	bhi	80ce <.L2+0x54>
+    80ca:	cb 30       	addb	#48
+    80cc:	20 04       	bra	80d2 <.L2+0x58>
+    80ce:	d6 0b       	ldab	*b <CFORC>
+    80d0:	cb 37       	addb	#55
+    80d2:	18 de 0e    	ldy	*e <TCNT>
+    80d5:	18 e7 14    	stab	20,y
+    80d8:	d6 0d       	ldab	*d <OC1D>
+    80da:	c1 09       	cmpb	#9
+    80dc:	22 04       	bhi	80e2 <.L2+0x68>
+    80de:	cb 30       	addb	#48
+    80e0:	20 04       	bra	80e6 <.L2+0x6c>
+    80e2:	d6 0d       	ldab	*d <OC1D>
+    80e4:	cb 37       	addb	#55
+    80e6:	18 de 0e    	ldy	*e <TCNT>
+    80e9:	18 e7 13    	stab	19,y
+    80ec:	18 de 06    	ldy	*6 <_.frame>
+    80ef:	18 e6 09    	ldab	9,y
+    80f2:	c1 09       	cmpb	#9
+    80f4:	22 0c       	bhi	8102 <.L2+0x88>
+    80f6:	cb 30       	addb	#48
+    80f8:	df 04       	stx	*4 <LCDCMD_QUERYBUSY>
+    80fa:	de 0e       	ldx	*e <TCNT>
+    80fc:	e7 12       	stab	18,x
+    80fe:	de 04       	ldx	*4 <LCDCMD_QUERYBUSY>
+    8100:	20 0e       	bra	8110 <.L2+0x96>
+    8102:	18 de 06    	ldy	*6 <_.frame>
+    8105:	18 e6 09    	ldab	9,y
+    8108:	cb 37       	addb	#55
+    810a:	18 de 0e    	ldy	*e <TCNT>
+    810d:	18 e7 12    	stab	18,y
+    8110:	df 04       	stx	*4 <LCDCMD_QUERYBUSY>
+    8112:	ce 70 00    	ldx	#7000 <REGS+0x6000>
+    8115:	37          	pshb
+    8116:	e6 00       	ldab	0,x
+    8118:	d7 01       	stab	*1 <RESV1>
+    811a:	de 00       	ldx	*0 <LCDCMD_CMD>
+    811c:	33          	pulb
+    811d:	8f          	xgdx
+    811e:	d7 0d       	stab	*d <OC1D>
+    8120:	8f          	xgdx
+    8121:	de 04       	ldx	*4 <LCDCMD_QUERYBUSY>
+    8123:	4f          	clra
+    8124:	5f          	clrb
+    8125:	dd 0a       	std	*a <PORTE>
+    8127:	dd 08       	std	*8 <PORTD>
+    8129:	d6 0d       	ldab	*d <OC1D>
+    812b:	18 de 06    	ldy	*6 <_.frame>
+    812e:	18 6f 05    	clr	5,y
+    8131:	18 e7 06    	stab	6,y
+    8134:	dc 0e       	ldd	*e <TCNT>
+    8136:	d3 0a       	addd	*a <PORTE>
+    8138:	c3 00 05    	addd	#5 <PORTCL>
+    813b:	18 8f       	xgdy
+    813d:	de 0a       	ldx	*a <PORTE>
+    813f:	df 04       	stx	*4 <LCDCMD_QUERYBUSY>
+    8141:	de 06       	ldx	*6 <_.frame>
+    8143:	ec 05       	ldd	5,x
+    8145:	de 04       	ldx	*4 <LCDCMD_QUERYBUSY>
+    8147:	bd 84 fb    	jsr	84fb <___ashrhi3>
+    814a:	c5 01       	bitb	#1
+    814c:	27 04       	beq	8152 <.L2+0xd8>
+    814e:	c6 58       	ldab	#88
+    8150:	20 02       	bra	8154 <.L2+0xda>
+    8152:	c6 2e       	ldab	#46
+    8154:	18 e7 00    	stab	0,y
+    8157:	dc 0a       	ldd	*a <PORTE>
+    8159:	de 08       	ldx	*8 <PORTD>
+    815b:	c3 00 01    	addd	#1 <RESV1>
+    815e:	24 01       	bcc	8161 <.L2+0xe7>
+    8160:	08          	inx
+    8161:	dd 0a       	std	*a <PORTE>
+    8163:	df 08       	stx	*8 <PORTD>
+    8165:	2b cd       	bmi	8134 <.L2+0xba>
+    8167:	dc 08       	ldd	*8 <PORTD>
+    8169:	2e 07       	bgt	8172 <.L2+0xf8>
+    816b:	de 0a       	ldx	*a <PORTE>
+    816d:	8c 00 07    	cpx	#7 <DDRC>
+    8170:	23 c2       	bls	8134 <.L2+0xba>
+    8172:	bd 83 65    	jsr	8365 <ReadAnalog6>
+    8175:	f6 c0 4c    	ldab	c04c <Analog6>
+    8178:	18 de 06    	ldy	*6 <_.frame>
+    817b:	18 e7 07    	stab	7,y
+    817e:	c4 0f       	andb	#15
+    8180:	d7 09       	stab	*9 <DDRD>
+    8182:	18 e6 07    	ldab	7,y
+    8185:	54          	lsrb
+    8186:	54          	lsrb
+    8187:	54          	lsrb
+    8188:	54          	lsrb
+    8189:	d7 0b       	stab	*b <CFORC>
+    818b:	d6 09       	ldab	*9 <DDRD>
+    818d:	c1 09       	cmpb	#9
+    818f:	22 04       	bhi	8195 <.L2+0x11b>
+    8191:	cb 30       	addb	#48
+    8193:	20 04       	bra	8199 <.L2+0x11f>
+    8195:	d6 09       	ldab	*9 <DDRD>
+    8197:	cb 37       	addb	#55
+    8199:	18 de 0e    	ldy	*e <TCNT>
+    819c:	18 e7 0f    	stab	15,y
+    819f:	d6 0b       	ldab	*b <CFORC>
+    81a1:	c1 09       	cmpb	#9
+    81a3:	22 04       	bhi	81a9 <.L2+0x12f>
+    81a5:	cb 30       	addb	#48
+    81a7:	20 04       	bra	81ad <.L2+0x133>
+    81a9:	d6 0b       	ldab	*b <CFORC>
+    81ab:	cb 37       	addb	#55
+    81ad:	18 de 0e    	ldy	*e <TCNT>
+    81b0:	18 e7 0e    	stab	14,y
+    81b3:	d6 0d       	ldab	*d <OC1D>
+    81b5:	2b 10       	bmi	81c7 <.L2+0x14d>
+    81b7:	c6 53       	ldab	#83
+    81b9:	18 e7 10    	stab	16,y
+    81bc:	c6 08       	ldab	#8
+    81be:	37          	pshb
+    81bf:	34          	des
+    81c0:	c6 30       	ldab	#48
+    81c2:	bd 83 b3    	jsr	83b3 <PWMOnFree>
+    81c5:	31          	ins
+    81c6:	31          	ins
+    81c7:	dc 0c       	ldd	*c <OC1M>
+    81c9:	c5 40       	bitb	#64
+    81cb:	27 03       	beq	81d0 <.L2+0x156>
+    81cd:	7e 80 7a    	jmp	807a <.L2>
+    81d0:	c6 2e       	ldab	#46
+    81d2:	18 de 0e    	ldy	*e <TCNT>
+    81d5:	18 e7 10    	stab	16,y
+    81d8:	bd 83 ac    	jsr	83ac <PWMKillNow>
+    81db:	7e 80 7a    	jmp	807a <.L2>
+
+000081de <LCDPrintString>:
+    81de:	cc 00 02    	ldd	#2 <__bss_size>
+    81e1:	9d 10       	jsr	*10 <TIC1>
+    81e3:	86 02       	ldaa	#2
+
+000081e5 <psloop>:
+    81e5:	e6 00       	ldab	0,x
+    81e7:	27 05       	beq	81ee <psloopdone>
+    81e9:	9d 10       	jsr	*10 <TIC1>
+    81eb:	08          	inx
+    81ec:	20 f7       	bra	81e5 <psloop>
+
+000081ee <psloopdone>:
+    81ee:	39          	rts
+
+000081ef <LCDinit>:
+    81ef:	8d 19       	bsr	820a <LCDLoadDriver>
+    81f1:	cc 00 38    	ldd	#38 <RESV4>
+    81f4:	9d 10       	jsr	*10 <TIC1>
+    81f6:	c6 0c       	ldab	#12
+    81f8:	9d 10       	jsr	*10 <TIC1>
+    81fa:	8d 23       	bsr	821f <LCDLoadChars>
+
+000081fc <LCDcls>:
+    81fc:	cc 00 01    	ldd	#1 <RESV1>
+    81ff:	9d 10       	jsr	*10 <TIC1>
+    8201:	c6 06       	ldab	#6
+    8203:	9d 10       	jsr	*10 <TIC1>
+    8205:	c6 8f       	ldab	#143
+    8207:	9d 10       	jsr	*10 <TIC1>
+    8209:	39          	rts
+
+0000820a <LCDLoadDriver>:
+    820a:	ce 82 54    	ldx	#8254 <LCDcharsEnd>
+    820d:	18 ce 00 10 	ldy	#10 <TIC1>
+
+00008211 <LCDloop>:
+    8211:	a6 00       	ldaa	0,x
+    8213:	18 a7 00    	staa	0,y
+    8216:	08          	inx
+    8217:	18 08       	iny
+    8219:	8c 82 9a    	cpx	#829a <TimerInit>
+    821c:	26 f3       	bne	8211 <LCDloop>
+    821e:	39          	rts
+
+0000821f <LCDLoadChars>:
+    821f:	cc 00 40    	ldd	#40 <CONFIG+0x1>
+    8222:	9d 10       	jsr	*10 <TIC1>
+    8224:	86 02       	ldaa	#2
+    8226:	ce 82 34    	ldx	#8234 <LCDchars>
+
+00008229 <LCDLoadCharLoop>:
+    8229:	e6 00       	ldab	0,x
+    822b:	9d 10       	jsr	*10 <TIC1>
+    822d:	08          	inx
+    822e:	8c 82 54    	cpx	#8254 <LCDcharsEnd>
+    8231:	26 f6       	bne	8229 <LCDLoadCharLoop>
+    8233:	39          	rts
+
+00008234 <LCDchars>:
+    8234:	00          	bgnd
+    8235:	0e          	cli
+    8236:	0e          	cli
+    8237:	04          	lsrd
+    8238:	04          	lsrd
+    8239:	0e          	cli
+    823a:	0e          	cli
+    823b:	00          	bgnd
+    823c:	00          	bgnd
+    823d:	0c          	clc
+    823e:	1c 1c 07    	bset	28,x #$07
+    8241:	07          	tpa
+    8242:	06          	tap
+    8243:	00          	bgnd
+    8244:	00          	bgnd
+    8245:	00          	bgnd
+    8246:	11          	cba
+    8247:	1f 1f 11 00 	brclr	31,x #$11 824b <LCDchars+0x17>
+    824b:	00          	bgnd
+    824c:	00          	bgnd
+    824d:	06          	tap
+    824e:	07          	tpa
+    824f:	07          	tpa
+    8250:	1c 1c 0c    	bset	28,x #$0c
+	...
+
+00008254 <LCDcharsEnd>:
+    8254:	3c          	pshx
+    8255:	ce 10 00    	ldx	#1000 <REGS>
+    8258:	0f          	sei
+    8259:	1d 3c 20    	bclr	60,x #$20
+    825c:	1d 00 10    	bclr	0,x #$10
+    825f:	6f 07       	clr	7,x
+    8261:	81 04       	cmpa	#4
+    8263:	26 0e       	bne	8273 <LCDBusy>
+    8265:	86 01       	ldaa	#1
+    8267:	a7 04       	staa	4,x
+    8269:	1c 00 10    	bset	0,x #$10
+    826c:	a6 03       	ldaa	3,x
+    826e:	1d 00 10    	bclr	0,x #$10
+    8271:	20 21       	bra	8294 <LCDdriverexit>
+
+00008273 <LCDBusy>:
+    8273:	97 58       	staa	*58 <LCDtempbyte>
+    8275:	86 01       	ldaa	#1
+    8277:	a7 04       	staa	4,x
+    8279:	1c 00 10    	bset	0,x #$10
+    827c:	a6 03       	ldaa	3,x
+    827e:	1d 00 10    	bclr	0,x #$10
+    8281:	84 80       	anda	#128
+    8283:	26 ee       	bne	8273 <LCDBusy>
+    8285:	6a 07       	dec	7,x
+    8287:	96 58       	ldaa	*58 <LCDtempbyte>
+    8289:	a7 04       	staa	4,x
+    828b:	e7 03       	stab	3,x
+    828d:	1c 00 10    	bset	0,x #$10
+    8290:	01          	nop
+    8291:	1d 00 10    	bclr	0,x #$10
+
+00008294 <LCDdriverexit>:
+    8294:	1c 3c 20    	bset	60,x #$20
+    8297:	38          	pulx
+
+00008298 <LCDdriverCLI>:
+    8298:	0e          	cli
+    8299:	39          	rts
+
+0000829a <TimerInit>:
+    829a:	0f          	sei
+    829b:	7f 00 59    	clr	59 <TimerClock>
+    829e:	7f 00 5b    	clr	5b <TimerClock+0x2>
+    82a1:	ce c0 00    	ldx	#c000 <__data_section_start>
+
+000082a4 <ZeroTable>:
+    82a4:	6f 00       	clr	0,x
+    82a6:	08          	inx
+    82a7:	8c c0 28    	cpx	#c028 <LCDBuffer>
+    82aa:	26 f8       	bne	82a4 <ZeroTable>
+    82ac:	ce bf 00    	ldx	#bf00 <VECTOR_BASE>
+    82af:	cc 82 de    	ldd	#82de <TimerInterrupt>
+    82b2:	ed e2       	std	226,x
+    82b4:	ce 10 00    	ldx	#1000 <REGS>
+    82b7:	6f 24       	clr	36,x
+    82b9:	1c 23 10    	bset	35,x #$10
+    82bc:	1c 22 10    	bset	34,x #$10
+    82bf:	0e          	cli
+    82c0:	39          	rts
+
+000082c1 <TimerInstallUser>:
+    82c1:	ce c0 00    	ldx	#c000 <__data_section_start>
+
+000082c4 <CallTableSearch>:
+    82c4:	6d 00       	tst	0,x
+    82c6:	26 0c       	bne	82d4 <SlotFull>
+    82c8:	08          	inx
+    82c9:	6d 00       	tst	0,x
+    82cb:	26 07       	bne	82d4 <SlotFull>
+    82cd:	09          	dex
+    82ce:	ed 00       	std	0,x
+    82d0:	ce 00 00    	ldx	#0 <LCDCMD_CMD>
+    82d3:	39          	rts
+
+000082d4 <SlotFull>:
+    82d4:	08          	inx
+    82d5:	8c c0 28    	cpx	#c028 <LCDBuffer>
+    82d8:	26 ea       	bne	82c4 <CallTableSearch>
+    82da:	ce 00 01    	ldx	#1 <RESV1>
+    82dd:	39          	rts
+
+000082de <TimerInterrupt>:
+    82de:	ce 10 00    	ldx	#1000 <REGS>
+    82e1:	cc 07 d0    	ldd	#7d0 <RESETINT+0x6d2>
+    82e4:	e3 1c       	addd	28,x
+    82e6:	ed 1c       	std	28,x
+    82e8:	1d 23 ef    	bclr	35,x #$ef
+    82eb:	de 59       	ldx	*59 <TimerClock>
+    82ed:	08          	inx
+    82ee:	df 59       	stx	*59 <TimerClock>
+    82f0:	26 05       	bne	82f7 <TimerUnder>
+    82f2:	de 5b       	ldx	*5b <TimerClock+0x2>
+    82f4:	08          	inx
+    82f5:	df 5b       	stx	*5b <TimerClock+0x2>
+
+000082f7 <TimerUnder>:
+    82f7:	ce c0 00    	ldx	#c000 <__data_section_start>
+
+000082fa <CallTable>:
+    82fa:	1a ee 00    	ldy	0,x
+    82fd:	27 05       	beq	8304 <NoRoutine>
+    82ff:	3c          	pshx
+    8300:	18 ad 00    	jsr	0,y
+    8303:	38          	pulx
+
+00008304 <NoRoutine>:
+    8304:	08          	inx
+    8305:	08          	inx
+    8306:	8c c0 28    	cpx	#c028 <LCDBuffer>
+    8309:	26 ef       	bne	82fa <CallTable>
+    830b:	3b          	rti
+
+0000830c <LCDBufferInit>:
+    830c:	86 20       	ldaa	#32
+    830e:	ce c0 28    	ldx	#c028 <LCDBuffer>
+
+00008311 <ClearBuffer>:
+    8311:	a7 00       	staa	0,x
+    8313:	08          	inx
+    8314:	8c c0 48    	cpx	#c048 <LCDCursorPos>
+    8317:	26 f8       	bne	8311 <ClearBuffer>
+    8319:	cc 83 1e    	ldd	#831e <LCDBufferInterrupt>
+    831c:	20 a3       	bra	82c1 <TimerInstallUser>
+
+0000831e <LCDBufferInterrupt>:
+    831e:	96 5a       	ldaa	*5a <TimerClock+0x1>
+    8320:	44          	lsra
+    8321:	44          	lsra
+    8322:	84 03       	anda	#3
+    8324:	b7 c0 47    	staa	c047 <LCDBuffer+0x1f>
+    8327:	86 04       	ldaa	#4
+    8329:	9d 10       	jsr	*10 <TIC1>
+    832b:	84 80       	anda	#128
+    832d:	27 01       	beq	8330 <CheckBuffer>
+    832f:	39          	rts
+
+00008330 <CheckBuffer>:
+    8330:	f6 c0 48    	ldab	c048 <LCDCursorPos>
+    8333:	c1 10       	cmpb	#16
+    8335:	22 12       	bhi	8349 <SecondLine>
+    8337:	27 05       	beq	833e <OffTop>
+    8339:	ce c0 28    	ldx	#c028 <LCDBuffer>
+    833c:	20 1b       	bra	8359 <WriteCharacter>
+
+0000833e <OffTop>:
+    833e:	cc 00 c0    	ldd	#c0 <__data_section_size+0x60>
+    8341:	9d 10       	jsr	*10 <TIC1>
+    8343:	86 20       	ldaa	#32
+    8345:	b7 c0 48    	staa	c048 <LCDCursorPos>
+    8348:	39          	rts
+
+00008349 <SecondLine>:
+    8349:	c1 30       	cmpb	#48
+    834b:	26 09       	bne	8356 <NotOffBottom>
+    834d:	cc 00 02    	ldd	#2 <__bss_size>
+    8350:	9d 10       	jsr	*10 <TIC1>
+    8352:	7f c0 48    	clr	c048 <LCDCursorPos>
+    8355:	39          	rts
+
+00008356 <NotOffBottom>:
+    8356:	ce c0 18    	ldx	#c018 <__data_section_start+0x18>
+
+00008359 <WriteCharacter>:
+    8359:	3a          	abx
+    835a:	5c          	incb
+    835b:	f7 c0 48    	stab	c048 <LCDCursorPos>
+    835e:	e6 00       	ldab	0,x
+    8360:	86 02       	ldaa	#2
+    8362:	7e 00 10    	jmp	10 <TIC1>
+
+00008365 <ReadAnalog6>:
+    8365:	3c          	pshx
+    8366:	36          	psha
+    8367:	ce 10 00    	ldx	#1000 <REGS>
+    836a:	86 00       	ldaa	#0
+    836c:	0f          	sei
+    836d:	a7 30       	staa	48,x
+
+0000836f <Wait>:
+    836f:	a6 30       	ldaa	48,x
+    8371:	84 80       	anda	#128
+    8373:	27 fa       	beq	836f <Wait>
+    8375:	0e          	cli
+    8376:	a6 31       	ldaa	49,x
+    8378:	b7 c0 4c    	staa	c04c <Analog6>
+    837b:	32          	pula
+    837c:	38          	pulx
+    837d:	39          	rts
+
+0000837e <PWMTable>:
+    837e:	00          	bgnd
+    837f:	00          	bgnd
+    8380:	00          	bgnd
+    8381:	01          	nop
+    8382:	01          	nop
+    8383:	01          	nop
+    8384:	08          	inx
+    8385:	42          	.byte	0x42
+    8386:	11          	cba
+    8387:	11          	cba
+    8388:	22 49       	bhi	83d3 <Disable+0xe>
+    838a:	49          	rola
+    838b:	29 52       	bvs	83df <TestMotor0+0xa>
+    838d:	aa 55       	oraa	85,x
+    838f:	55          	.byte	0x55
+    8390:	aa ab       	oraa	171,x
+    8392:	56          	rorb
+    8393:	ab dd       	adda	221,x
+    8395:	b6 ee ee    	ldaa	eeee <t1+0x2e8d>
+    8398:	ee ef       	ldx	239,x
+    839a:	ef ef       	stx	239,x
+    839c:	fe ff ff    	ldx	ffff <_stack+0x1>
+    839f:	ff 7f 70    	stx	7f70 <REGS+0x6f70>
+
+000083a0 <PWMInit>:
+    83a0:	7f 70 00    	clr	7000 <REGS+0x6000>
+    83a3:	7f c0 50    	clr	c050 <PWMControl>
+    83a6:	cc 84 14    	ldd	#8414 <PWMInterrupt>
+    83a9:	7e 82 c1    	jmp	82c1 <TimerInstallUser>
+
+000083ac <PWMKillNow>:
+    83ac:	7f c0 50    	clr	c050 <PWMControl>
+    83af:	7f 70 00    	clr	7000 <REGS+0x6000>
+    83b2:	39          	rts
+
+000083b3 <PWMOnFree>:
+    83b3:	17          	tba
+    83b4:	30          	tsx
+    83b5:	e6 04       	ldab	4,x
+
+000083b7 <PWMOn>:
+    83b7:	c1 0f       	cmpb	#15
+    83b9:	25 05       	bcs	83c0 <FindIndex>
+    83bb:	ce 83 9c    	ldx	#839c <PWMTable+0x1e>
+    83be:	20 05       	bra	83c5 <Disable>
+
+000083c0 <FindIndex>:
+    83c0:	ce 83 7e    	ldx	#837e <PWMTable>
+    83c3:	59          	rolb
+    83c4:	3a          	abx
+
+000083c5 <Disable>:
+    83c5:	16          	tab
+    83c6:	c4 f0       	andb	#240
+    83c8:	c8 f0       	eorb	#240
+    83ca:	f4 c0 50    	andb	c050 <PWMControl>
+    83cd:	f7 c0 50    	stab	c050 <PWMControl>
+    83d0:	8c 83 7e    	cpx	#837e <PWMTable>
+    83d3:	26 00       	bne	83d5 <TestMotor0>
+
+000083d5 <TestMotor0>:
+    83d5:	85 10       	bita	#16
+    83d7:	27 0a       	beq	83e3 <TestMotor1>
+    83d9:	e6 00       	ldab	0,x
+    83db:	f7 c0 54    	stab	c054 <PWMValues>
+    83de:	e6 01       	ldab	1,x
+    83e0:	f7 c0 55    	stab	c055 <PWMValues+0x1>
+
+000083e3 <TestMotor1>:
+    83e3:	85 20       	bita	#32
+    83e5:	27 0a       	beq	83f1 <TestMotor2>
+    83e7:	e6 00       	ldab	0,x
+    83e9:	f7 c0 56    	stab	c056 <PWMValues+0x2>
+    83ec:	e6 01       	ldab	1,x
+    83ee:	f7 c0 57    	stab	c057 <PWMValues+0x3>
+
+000083f1 <TestMotor2>:
+    83f1:	85 40       	bita	#64
+    83f3:	27 0a       	beq	83ff <TestMotor3>
+    83f5:	e6 00       	ldab	0,x
+    83f7:	f7 c0 58    	stab	c058 <PWMValues+0x4>
+    83fa:	e6 01       	ldab	1,x
+    83fc:	f7 c0 59    	stab	c059 <PWMValues+0x5>
+
+000083ff <TestMotor3>:
+    83ff:	85 80       	bita	#128
+    8401:	27 0a       	beq	840d <Enable>
+    8403:	e6 00       	ldab	0,x
+    8405:	f7 c0 5a    	stab	c05a <PWMValues+0x6>
+    8408:	e6 01       	ldab	1,x
+    840a:	f7 c0 5b    	stab	c05b <PWMValues+0x7>
+
+0000840d <Enable>:
+    840d:	ba c0 50    	oraa	c050 <PWMControl>
+    8410:	b7 c0 50    	staa	c050 <PWMControl>
+    8413:	39          	rts
+
+00008414 <PWMInterrupt>:
+    8414:	0f          	sei
+    8415:	b6 c0 50    	ldaa	c050 <PWMControl>
+
+00008418 <Motor0>:
+    8418:	85 10       	bita	#16
+    841a:	27 16       	beq	8432 <Motor1>
+    841c:	8f          	xgdx
+    841d:	fc c0 54    	ldd	c054 <PWMValues>
+    8420:	05          	asld
+    8421:	24 09       	bcc	842c <Motor0Off>
+    8423:	c3 00 01    	addd	#1 <RESV1>
+    8426:	fd c0 54    	std	c054 <PWMValues>
+    8429:	8f          	xgdx
+    842a:	20 06       	bra	8432 <Motor1>
+
+0000842c <Motor0Off>:
+    842c:	fd c0 54    	std	c054 <PWMValues>
+    842f:	8f          	xgdx
+    8430:	84 ef       	anda	#239
+
+00008432 <Motor1>:
+    8432:	85 20       	bita	#32
+    8434:	27 16       	beq	844c <Motor2>
+    8436:	8f          	xgdx
+    8437:	fc c0 56    	ldd	c056 <PWMValues+0x2>
+    843a:	05          	asld
+    843b:	24 09       	bcc	8446 <Motor1Off>
+    843d:	c3 00 01    	addd	#1 <RESV1>
+    8440:	fd c0 56    	std	c056 <PWMValues+0x2>
+    8443:	8f          	xgdx
+    8444:	20 06       	bra	844c <Motor2>
+
+00008446 <Motor1Off>:
+    8446:	fd c0 56    	std	c056 <PWMValues+0x2>
+    8449:	8f          	xgdx
+    844a:	84 df       	anda	#223
+
+0000844c <Motor2>:
+    844c:	85 40       	bita	#64
+    844e:	27 16       	beq	8466 <Motor3>
+    8450:	8f          	xgdx
+    8451:	fc c0 58    	ldd	c058 <PWMValues+0x4>
+    8454:	05          	asld
+    8455:	24 09       	bcc	8460 <Motor2Off>
+    8457:	c3 00 01    	addd	#1 <RESV1>
+    845a:	fd c0 58    	std	c058 <PWMValues+0x4>
+    845d:	8f          	xgdx
+    845e:	20 06       	bra	8466 <Motor3>
+
+00008460 <Motor2Off>:
+    8460:	fd c0 58    	std	c058 <PWMValues+0x4>
+    8463:	8f          	xgdx
+    8464:	84 bf       	anda	#191
+
+00008466 <Motor3>:
+    8466:	85 80       	bita	#128
+    8468:	27 16       	beq	8480 <Store>
+    846a:	8f          	xgdx
+    846b:	fc c0 5a    	ldd	c05a <PWMValues+0x6>
+    846e:	05          	asld
+    846f:	24 09       	bcc	847a <Motor3Off>
+    8471:	c3 00 01    	addd	#1 <RESV1>
+    8474:	fd c0 5a    	std	c05a <PWMValues+0x6>
+    8477:	8f          	xgdx
+    8478:	20 06       	bra	8480 <Store>
+
+0000847a <Motor3Off>:
+    847a:	fd c0 5a    	std	c05a <PWMValues+0x6>
+    847d:	8f          	xgdx
+    847e:	84 7f       	anda	#127
+
+00008480 <Store>:
+    8480:	b7 70 00    	staa	7000 <REGS+0x6000>
+    8483:	0e          	cli
+    8484:	39          	rts
+
+00008485 <SonarInit>:
+    8485:	ce 10 00    	ldx	#1000 <REGS>
+    8488:	1c 26 80    	bset	38,x #$80
+    848b:	1c 21 02    	bset	33,x #$02
+    848e:	1d 21 01    	bclr	33,x #$01
+    8491:	18 ce bf 00 	ldy	#bf00 <VECTOR_BASE>
+    8495:	cc 84 c0    	ldd	#84c0 <SonarInterrupt>
+    8498:	18 ed ea    	std	234,y
+    849b:	1c 22 01    	bset	34,x #$01
+    849e:	cc 84 a4    	ldd	#84a4 <SonarSample>
+    84a1:	7e 82 c1    	jmp	82c1 <TimerInstallUser>
+
+000084a4 <SonarSample>:
+    84a4:	96 5a       	ldaa	*5a <TimerClock+0x1>
+    84a6:	84 3f       	anda	#63
+    84a8:	27 01       	beq	84ab <Fire>
+    84aa:	39          	rts
+
+000084ab <Fire>:
+    84ab:	ce 10 00    	ldx	#1000 <REGS>
+    84ae:	1c 00 80    	bset	0,x #$80
+    84b1:	01          	nop
+    84b2:	01          	nop
+    84b3:	18 ce c0 5e 	ldy	#c05e <StartTime>
+    84b7:	ec 0e       	ldd	14,x
+    84b9:	18 ed 00    	std	0,y
+    84bc:	1d 00 80    	bclr	0,x #$80
+    84bf:	39          	rts
+
+000084c0 <SonarInterrupt>:
+    84c0:	ce 10 00    	ldx	#1000 <REGS>
+    84c3:	18 ce c0 5c 	ldy	#c05c <SonarRange>
+    84c7:	ec 14       	ldd	20,x
+    84c9:	18 a3 02    	subd	2,y
+    84cc:	18 ed 00    	std	0,y
+    84cf:	1d 23 fe    	bclr	35,x #$fe
+    84d2:	3b          	rti
+
+000084d3 <__memcpy>:
+    84d3:	18 8f       	xgdy
+    84d5:	30          	tsx
+    84d6:	ec 04       	ldd	4,x
+    84d8:	ee 02       	ldx	2,x
+    84da:	1a 83 00 00 	cpd	#0 <LCDCMD_CMD>
+    84de:	27 15       	beq	84f5 <End>
+    84e0:	18 3c       	pshy
+    84e2:	4c          	inca
+
+000084e3 <L0>:
+    84e3:	36          	psha
+
+000084e4 <L1>:
+    84e4:	a6 00       	ldaa	0,x
+    84e6:	18 a7 00    	staa	0,y
+    84e9:	08          	inx
+    84ea:	18 08       	iny
+    84ec:	5a          	decb
+    84ed:	26 f5       	bne	84e4 <L1>
+    84ef:	32          	pula
+    84f0:	4a          	deca
+    84f1:	26 f0       	bne	84e3 <L0>
+    84f3:	18 38       	puly
+
+000084f5 <End>:
+    84f5:	18 8f       	xgdy
+    84f7:	39          	rts
+
+000084f8 <__premain>:
+    84f8:	4f          	clra
+    84f9:	06          	tap
+    84fa:	39          	rts
+
+000084fb <___ashrhi3>:
+    84fb:	8c 00 10    	cpx	#10 <TIC1>
+    84fe:	2c 0b       	bge	850b <Return_minus_1_or_zero>
+    8500:	8c 00 00    	cpx	#0 <LCDCMD_CMD>
+    8503:	27 05       	beq	850a <Return>
+
+00008505 <Loop>:
+    8505:	47          	asra
+    8506:	56          	rorb
+    8507:	09          	dex
+    8508:	26 fb       	bne	8505 <Loop>
+
+0000850a <Return>:
+    850a:	39          	rts
+
+0000850b <Return_minus_1_or_zero>:
+    850b:	5f          	clrb
+    850c:	4d          	tsta
+    850d:	2a 01       	bpl	8510 <Return_zero>
+    850f:	53          	comb
+
+00008510 <Return_zero>:
+    8510:	17          	tba
+    8511:	39          	rts
+
+00008512 <_exit>:
+    8512:	0e          	cli
+    8513:	3e          	wai
+    8514:	20 fc       	bra	8512 <_exit>

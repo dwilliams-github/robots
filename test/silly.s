@@ -1,0 +1,1 @@
+	.section _mainmain:	ldaa #$40	staa $1000loop:	bra loop
